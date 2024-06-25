@@ -1,39 +1,56 @@
-// SPDX-License-Identifier: MIT
-pragma solidity 0.8.18;
+### README for MyToken Contract
 
-contract MyToken {
-    // Public variables to store the details about the coin
-    string public name = "Cars";
-    string public symbol = "CRS";
-    uint256 public totalSupply = 0;
+## MyToken Contract
 
-    // Mapping of addresses to balances
-    mapping(address => uint) public balances;
+The `MyToken` contract is a straightforward Ethereum token implementation, allowing for minting and burning of tokens, and tracking balances.
 
-    // Mint function to create new tokens
-    function mint(address adrs, uint value) public {
-        totalSupply += value;
-        balances[adrs] += value;
-    }
+### Token Details
+- **Name:** Cars
+- **Symbol:** CRS
+- **Total Supply:** Starts at 0 and can be increased via minting.
 
-    // Burn function to destroy tokens
-    function burn(address from, uint256 value) public {
-        if (balances[from] >= value) {
-            totalSupply -= value;
-            balances[from] -= value;
-        } else {
-            // Handle the case where the balance is insufficient
-            // You can revert the transaction or take other actions
-            revert("Insufficient balance to burn");
-        }
-    }
-  }
+### Contract Variables
+- `name`: Public variable storing the token name.
+- `symbol`: Public variable storing the token symbol.
+- `totalSupply`: Public variable storing the total token supply.
+- `balances`: Public mapping tracking each address's token balance.
 
-Explanation:
-The contract defines three public variables: tokenName, tokenAbbrv, and totalSupply, which store the name, abbreviation, and total supply of the token, respectively, and are public in nature. 
-It also includes a balances mapping that associates addresses with their respective token balances. 
-The mint function allows for the creation of new tokens, increasing both the total supply and the balance of a specified address by a given value. Conversely, the burn function, which employs an if-else structure, first verifies if the specified address has a sufficient balance to burn the desired amount of tokens.
-If the balance is adequate, it decreases both the total supply and the balance of the address by the specified amount. If the balance is insufficient, the function halts execution and provides an error message using revert. 
-This explanation offers a concise overview of the provided code.
+### Functions
 
-AUTHOR : PANKAJ
+#### mint
+```solidity
+function mint(address adrs, uint value) public
+```
+Creates new tokens and assigns them to a specified address, increasing total supply and updating the balance.
+
+- **Parameters:**
+  - `adrs`: Address to receive new tokens.
+  - `value`: Number of tokens to create.
+
+#### burn
+```solidity
+function burn(address from, uint256 value) public
+```
+Destroys tokens from a specified address, decreasing total supply and updating the balance. Reverts if the balance is insufficient.
+
+- **Parameters:**
+  - `from`: Address from which tokens will be burned.
+  - `value`: Number of tokens to burn.
+
+### Example Interactions
+
+1. **Minting Tokens:**
+   ```solidity
+   mint(0x123..., 100);
+   ```
+   Increases `totalSupply` by 100 and adds 100 to `0x123...`'s balance.
+
+2. **Burning Tokens:**
+   ```solidity
+   burn(0x123..., 50);
+   ```
+   Decreases `totalSupply` by 50 and subtracts 50 from `0x123...`'s balance. Reverts if balance is insufficient.
+
+### Notes
+- Uses Solidity version `0.8.18` with built-in overflow and underflow protection.
+- Ensure the interacting address has sufficient privileges and balance for minting and burning operations.
